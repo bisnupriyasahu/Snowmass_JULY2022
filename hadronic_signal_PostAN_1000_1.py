@@ -24,25 +24,7 @@ try:
   ROOT.gInterpreter.Declare('#include "classes/DelphesClasses.h"')
   ROOT.gInterpreter.Declare('#include "external/ExRootAnalysis/ExRootTreeReader.h"')
 except:
-  pass
-
-def nDaughters(gen):
-  """Returns the number of daughters of a genparticle."""
-  return gen.D2 - gen.D1
-
-def finalDaughters(gen, brpart, daughters=None):
-  if daughters is None:
-    daughters = []
-    
-  for i in range(gen.D1, gen.D2+1):
-    daughter = brpart[i]
-    if nDaughters(daughter) == 0:
-      daughters.append(daughter)
-    else:
-      finalDaughters(daughter, daughters)
-    #print "daughter : ",daughter
-  return daughters
-      
+  pass      
 
 inputFile = sys.argv[1]
 outputFile = sys.argv[2]
@@ -151,34 +133,40 @@ DR_nr_genreco2 = ROOT.TH1F("DeltaR_2","Delta R ",2000,0.0,3)
 #histElectronPT = ROOT.TH1F("Electron_pt", "electron P_{T}", 100, 0.0, 1000.0)
 
 # Loop over all events
+count_1 = 0
+count_2 = 0
+count_3 = 0
+count_4 = 0
+count_5 = 0
+count_6 = 0
+count_7 = 0
+count_8 = 0
+count_9 = 0
+count_10 = 0
+count_11 = 0
 for entry in range(0, numberOfEntries):
   # Load selected branches with data from specified event
   treeReader.ReadEntry(entry)
   nEvents.Fill(1)
   nEvents.Fill(2,numberOfEntries)
+  # Choose STOP and LSP mass
   STOP_idx = -1
   LSP_idx = -1
-  count_1 = 0
+
   for igen,gen in enumerate(branchParticle):
     if(abs(gen.PID) == 1000006):
       STOP_idx = igen
     if(abs(gen.PID) == 1000022 and igen != STOP_idx):
       LSP_idx = igen                                                                                             
-  #print("coming in STOP and LSP index")
   if(not(STOP_idx >= 0 and LSP_idx>= 0)): continue
   STOP = branchParticle.At(STOP_idx)
   LSP = branchParticle.At(LSP_idx)
-  if(not(STOP.Mass == 1000 and LSP.Mass == 1)): continue
+  if(not(STOP.Mass == 1000 and LSP.Mass == 1)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
   count_1 += 1
   nEvents_1.Fill(1)
   nEvents_1.Fill(2,count_1)
-  nEntries_1.Fill(1)
-  nEntries_1.Fill(2,numberOfEntries)
-  #print("coming after mass point")
-
-  # If event contains at least 1 jet
-  #if branchJet.GetEntries() > 0:
-  # Take first jet
+ 
+  # Take first jet and get tau1 and tau1 
   tau1_idx = -1
   tau2_idx = -1
   tau1_tau2_HT = -1
@@ -237,16 +225,12 @@ for entry in range(0, numberOfEntries):
     imet_idx = imet
   #print(" imet_idx", imet_idx)
  
-
-  count_2 = 0
   if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
   count_2 += 1
   nEvents_2.Fill(1)
   nEvents_2.Fill(2,count_2)
   nEntries_2.Fill(1)
   nEntries_2.Fill(2,numberOfEntries)
-  #print("coming after all selection")
-  #print ("Invarient mass : ", tau1tau2_m)
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
@@ -313,38 +297,30 @@ for entry in range(0, numberOfEntries):
     #print("leadchtau2 is ",leadchtau2)
     ptratio_tau2.Fill(leadchtau2)
           
-  gen_1 = None
-  gen_2 = None
-  gen_1PT = -1
-  gen_2PT = -1
-  dr_dau = -1
-  gen1_p4 = gen2_p4 = TLorentzVector()
+  gen1_idx = gen2_idx = -1 
+  gen_tau = None        
   nele = 0
   min_dr_1 = 999.9
   min_dr_2 = 999.9
-  gen_tau = None    
-  gen_p4 = TLorentzVector()
-  gen_tau_p4 = TLorentzVector()
-  count_gentau = 0
-  count_3 = 0
-  count_4 = 0
-  count_5 = 0
-  count_6 = 0
-  count_7 = 0
-  count_8 = 0
-  count_9 = 0
-  count_10 = 0
-  count_11 = 0
   for igen,gen in enumerate(branchParticle):
+
+    gen_1PT = -1
+    gen_2PT = -1
+    #dr_dau = -1
+    gen1_p4 = gen2_p4 = TLorentzVector()
+    gen_p4 = TLorentzVector()
+    gen_tau_p4 = TLorentzVector()
     if(abs(gen.PID) == 15):
       count_7 += 1
       nEntries_7.Fill(1)
       nEntries_7.Fill(2,count_7)
-
-
-      #here we d
       gen_tau = igen
       gen_tau_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
+      
+      #here we are checking for the hadronically decay of the gentau. 
+      #As daughter info was not stored in delphys, so checking by dR < 0.1  b/w gen taus and the gen particles
+      #if tau decayed leptonically, then there would be a lepton(e/mu) in dR < 0.1
+
       for jgen,genlep in enumerate(branchParticle):
         gen_p4.SetPtEtaPhiM(genlep.PT, genlep.Eta, genlep.Phi, genlep.Mass)
         dr_gentau = gen_p4.DeltaR(gen_tau_p4)
@@ -364,7 +340,7 @@ for entry in range(0, numberOfEntries):
       dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
       dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
       if(dr_1 < 0.3):
-        gen_1 = gen
+        gen1_idx = igen
         count_10 += 1
         nEntries_10.Fill(1)
         nEntries_10.Fill(2,count_10)
@@ -372,9 +348,8 @@ for entry in range(0, numberOfEntries):
         if (dr_1 < min_dr_1):
           min_dr_1 = dr_1
           DR_nr_genreco1.Fill(min_dr_1)
-          print("leadchtau1 in function during gen match: ", leadchtau1)
       elif (dr_2 < 0.3):
-        gen_2 = gen
+        gen2_idx = igen
         count_11 += 1
         nEntries_11.Fill(1)
         nEntries_11.Fill(2,count_11)
@@ -382,15 +357,15 @@ for entry in range(0, numberOfEntries):
         if(dr_1 < min_dr_2):
           min_dr_2 = dr_2  
           DR_nr_genreco2.Fill(min_dr_2)
-          print("leadchtau2 in function during gen match: ", leadchtau2)
-  if(gen_1 is not None):
-    print("numberOfEntries in gen_1 condition", numberOfEntries)
+  gen_1 = branchParticle.At(gen1_idx)
+  gen_2 = branchParticle.At(gen2_idx)
 
+  #  if(gen_1 is not None):
+  if(gen1_idx > 0):
     count_3 += 1
     nEntries_3.Fill(1)
     nEntries_3.Fill(2,count_3)
-
-    count_gentau += 1
+    
     print("count_3  ",count_3)
     genmatch_ptratio_tau1.Fill(leadchtau1)
     #print (leadchtau1)
@@ -464,8 +439,6 @@ for entry in range(0, numberOfEntries):
     if (gen_1PT > 380 and gen_1PT < 500):
       t1_notgR_380500.Fill(leadchtau1)
 
-
-  print("count_gentau is ", count_gentau)
 
   if (gen_2 is not None):
     #print("gen_2 pt is : ",gen_2.PT)
