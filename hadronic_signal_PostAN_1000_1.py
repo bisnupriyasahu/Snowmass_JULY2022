@@ -325,54 +325,73 @@ for entry in range(0, numberOfEntries):
   gen_tau = None    
   gen_p4 = TLorentzVector()
   gen_tau_p4 = TLorentzVector()
-
+  count_gentau = 0
+  count_3 = 0
+  count_4 = 0
+  count_5 = 0
+  count_6 = 0
+  count_7 = 0
+  count_8 = 0
+  count_9 = 0
+  count_10 = 0
+  count_11 = 0
   for igen,gen in enumerate(branchParticle):
     if(abs(gen.PID) == 15):
+      count_7 += 1
       nEntries_7.Fill(1)
-      nEntries_7.Fill(2,numberOfEntries)
+      nEntries_7.Fill(2,count_7)
 
+
+      #here we d
       gen_tau = igen
       gen_tau_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
       for jgen,genlep in enumerate(branchParticle):
-        #print("coming before jgen")
-        if (jgen == igen): continue
-        #print("coming before genp4")
         gen_p4.SetPtEtaPhiM(genlep.PT, genlep.Eta, genlep.Phi, genlep.Mass)
         dr_gentau = gen_p4.DeltaR(gen_tau_p4)
-        #print("coming dr_gentau: ", dr_gentau)
-        print("before dr cut of 0.1 genlep.PID :", genlep.PID)
+        print("coming dr_gentau before cut : ", dr_gentau)       
+        print("before dr cut of 0.1 genlep.PID :", genlep.PID)  
+        if(jgen == igen or dr_gentau > 0.1   ): continue
+        print("coming dr_gentau after cut: ", dr_gentau)
+        count_8 += 1
         nEntries_8.Fill(1)
-        nEntries_8.Fill(2,numberOfEntries)
-        if(dr_gentau < 0.1):
-          if((abs(genlep.PID) ==  11) or (abs(genlep.PID) == 13)): continue
-          print("after dr cut of 0.1 genlep.PID :", genlep.PID)
-          nEntries_9.Fill(1)
-          nEntries_9.Fill(2,numberOfEntries)
-
-          dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
-          dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
-          if(dr_1 < 0.3):
-            gen_1 = gen
-            nEntries_10.Fill(1)
-            nEntries_10.Fill(2,numberOfEntries)
-            gen_1PT = gen.PT
-            if (dr_1 < min_dr_1):
-              min_dr_1 = dr_1
-              DR_nr_genreco1.Fill(min_dr_1)
-              print("leadchtau1 in function during gen match: ", leadchtau1)
-          elif (dr_2 < 0.3):
-            gen_2 = gen
-            nEntries_11.Fill(1)
-            nEntries_11.Fill(2,numberOfEntries)
-            gen_2PT = gen.PT
-            if(dr_1 < min_dr_2):
-              min_dr_2 = dr_2  
-              DR_nr_genreco2.Fill(min_dr_2)
-              print("leadchtau2 in function during gen match: ", leadchtau2)
+        nEntries_8.Fill(2,count_8)
+        if((abs(genlep.PID) ==  11) or (abs(genlep.PID) ==  13)): continue
+        print("after dr cut of 0.1 genlep.PID :", genlep.PID)
+        count_9 += 1
+        nEntries_9.Fill(1)
+        nEntries_9.Fill(2,count_9)
+        
+        dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
+        dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
+        if(dr_1 < 0.3):
+          gen_1 = gen
+          count_10 += 1
+          nEntries_10.Fill(1)
+          nEntries_10.Fill(2,count_10)
+          gen_1PT = gen.PT
+          if (dr_1 < min_dr_1):
+            min_dr_1 = dr_1
+            DR_nr_genreco1.Fill(min_dr_1)
+            print("leadchtau1 in function during gen match: ", leadchtau1)
+        elif (dr_2 < 0.3):
+          gen_2 = gen
+          count_11 += 1
+          nEntries_11.Fill(1)
+          nEntries_11.Fill(2,count_11)
+          gen_2PT = gen.PT
+          if(dr_1 < min_dr_2):
+            min_dr_2 = dr_2  
+            DR_nr_genreco2.Fill(min_dr_2)
+            print("leadchtau2 in function during gen match: ", leadchtau2)
   if(gen_1 is not None):
+    print("numberOfEntries in gen_1 condition", numberOfEntries)
+
+    count_3 += 1
     nEntries_3.Fill(1)
-    nEntries_3.Fill(2,numberOfEntries)
-    print("leadchtau1 in function after gen match: ", leadchtau1)
+    nEntries_3.Fill(2,count_3)
+
+    count_gentau += 1
+    print("count_3  ",count_3)
     genmatch_ptratio_tau1.Fill(leadchtau1)
     #print (leadchtau1)
     gen_1pt =  gen_1.PT/tau1.PT
@@ -412,8 +431,9 @@ for entry in range(0, numberOfEntries):
   else: 
     #print (leadchtau1)
     notgenmatch_ptratio_tau1.Fill(leadchtau1)
+    count_4 += 1
     nEntries_4.Fill(1)
-    nEntries_4.Fill(2,numberOfEntries)
+    nEntries_4.Fill(2,count_4)
     if (gen_1PT > 10  and gen_1PT < 30):
       t1_notgR_1030.Fill(leadchtau1)
 
@@ -445,12 +465,13 @@ for entry in range(0, numberOfEntries):
       t1_notgR_380500.Fill(leadchtau1)
 
 
-
+  print("count_gentau is ", count_gentau)
 
   if (gen_2 is not None):
     #print("gen_2 pt is : ",gen_2.PT)
+    count_5 += 1
     nEntries_5.Fill(1)
-    nEntries_5.Fill(2,numberOfEntries)
+    nEntries_5.Fill(2,count_5)
     gen_2pt =  gen_2.PT/tau2.PT
     gen2_p4.SetPtEtaPhiM(gen_2.PT, gen_2.Eta, gen_2.Phi, gen_2.Mass)     
     
@@ -492,8 +513,9 @@ for entry in range(0, numberOfEntries):
 
   else:
     #print (leadchtau2)
+    count_6 += 1
     nEntries_6.Fill(1)
-    nEntries_6.Fill(2,numberOfEntries)
+    nEntries_6.Fill(2,count_6)
     notgenmatch_ptratio_tau2.Fill(leadchtau2)
     if (gen_2PT > 10  and gen_2PT < 30):
       t2_notgR_1030.Fill(leadchtau2)
