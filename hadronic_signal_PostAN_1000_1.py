@@ -360,29 +360,29 @@ for entry in range(0, numberOfEntries):
         count_9 += 1
         nEntries_9.Fill(1)
         nEntries_9.Fill(2,count_9)
-        
-        dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
-        dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
-        if(dr_1 < 0.3):
-          gen_1 = gen
-          count_10 += 1
-          nEntries_10.Fill(1)
-          nEntries_10.Fill(2,count_10)
-          gen_1PT = gen.PT
-          if (dr_1 < min_dr_1):
-            min_dr_1 = dr_1
-            DR_nr_genreco1.Fill(min_dr_1)
-            print("leadchtau1 in function during gen match: ", leadchtau1)
-        elif (dr_2 < 0.3):
-          gen_2 = gen
-          count_11 += 1
-          nEntries_11.Fill(1)
-          nEntries_11.Fill(2,count_11)
-          gen_2PT = gen.PT
-          if(dr_1 < min_dr_2):
-            min_dr_2 = dr_2  
-            DR_nr_genreco2.Fill(min_dr_2)
-            print("leadchtau2 in function during gen match: ", leadchtau2)
+      print("dr cut loop of 0.1 genlep.PID :", genlep.PID)
+      dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
+      dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
+      if(dr_1 < 0.3):
+        gen_1 = gen
+        count_10 += 1
+        nEntries_10.Fill(1)
+        nEntries_10.Fill(2,count_10)
+        gen_1PT = gen.PT
+        if (dr_1 < min_dr_1):
+          min_dr_1 = dr_1
+          DR_nr_genreco1.Fill(min_dr_1)
+          print("leadchtau1 in function during gen match: ", leadchtau1)
+      elif (dr_2 < 0.3):
+        gen_2 = gen
+        count_11 += 1
+        nEntries_11.Fill(1)
+        nEntries_11.Fill(2,count_11)
+        gen_2PT = gen.PT
+        if(dr_1 < min_dr_2):
+          min_dr_2 = dr_2  
+          DR_nr_genreco2.Fill(min_dr_2)
+          print("leadchtau2 in function during gen match: ", leadchtau2)
   if(gen_1 is not None):
     print("numberOfEntries in gen_1 condition", numberOfEntries)
 
