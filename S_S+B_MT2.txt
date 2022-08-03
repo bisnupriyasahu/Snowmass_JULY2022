@@ -1,0 +1,23 @@
+
+Processing Script_MT2.C...
+weight of TTBAR : 255.184
+weight of DY : 77.8561  246.5 9.49829e+06
+h1 Integral before : 58
+h2 Integral before : 24
+h7 Integral before : 37
+h8 Integral before : 54
+h9 Integral before : 0
+h10 Integral before : 7
+-------------------------------------------------------------------
+h1 Integral after : 14800.6
+h2 Integral after : 1868.55
+h7 Integral after : 696.339
+h8 Integral after : 988.036
+h9 Integral after : 0
+h10 Integral after : 1270
+-------------------------------------------------------------------
+S/sqrt(S+B) is  : 21.09
+coming before : 
+coming before 1A : 
+coming before 2A : 
+coming before 2A : 

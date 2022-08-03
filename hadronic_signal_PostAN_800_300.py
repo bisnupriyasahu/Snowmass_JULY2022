@@ -70,10 +70,10 @@ nEntries_10 = ROOT.TH1F("nEntries_10", "total events", 10, 0.0, 10)
 nEntries_11 = ROOT.TH1F("nEntries_11", "total events", 10, 0.0, 10)
 
 
-tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 30.0, 1000.0)
-tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 30.0, 1000.0)
-metPT = ROOT.TH1F("MET", "MET", 50, 0.0, 500.0)
-HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 1500.0)
+tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 30.0, 5000.0)
+tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 30.0, 5000.0)
+metPT = ROOT.TH1F("MET", "MET", 50, 0.0, 5000.0)
+HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 5000.0)
 ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 
@@ -125,7 +125,7 @@ t2_notgR_280330 = ROOT.TH1F("notgenmatched_R_PT7_tau2", "P_{T} Ratio", 50, 0.0, 
 t2_notgR_330380 = ROOT.TH1F("notgenmatched_R_PT8_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 t2_notgR_380500 = ROOT.TH1F("notgenmatched_R_PT9_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 
-MT = ROOT.TH1F("MT", "MT", 50, 0.0, 500.0)
+MT = ROOT.TH1F("MT", "MT", 50, 0.0, 5000.0)
 DR_daughter = ROOT.TH1F("DeltaR","Delta R ",2000,0.0,3)
 DR_nr_genreco1 = ROOT.TH1F("DeltaR_1","Delta R ",2000,0.0,3)
 DR_nr_genreco2 = ROOT.TH1F("DeltaR_2","Delta R ",2000,0.0,3)
@@ -170,7 +170,7 @@ for entry in range(0, numberOfEntries):
   if(not(STOP_idx >= 0 and LSP_idx>= 0)): continue
   STOP = branchParticle.At(STOP_idx)
   LSP = branchParticle.At(LSP_idx)
-  if(not(STOP.Mass == 1000 and LSP.Mass == 1)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
+  if(not(STOP.Mass == 800 and LSP.Mass == 300)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
   count_1 += 1
   nEvents_1.Fill(1)
   nEvents_1.Fill(2,count_1)
@@ -235,22 +235,14 @@ for entry in range(0, numberOfEntries):
   #print(" imet_idx", imet_idx)
  
   if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
-  count_2 += 1
-  nEvents_2.Fill(1)
-  nEvents_2.Fill(2,count_2)
-  nEntries_2.Fill(1)
-  nEntries_2.Fill(2,numberOfEntries)
+  
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
   tau1pt = tau_1.PT
   tau2pt = tau_2.PT
   metpt = met_pt.MET
-  tauPT_1.Fill(tau1pt)
-  tauPT_2.Fill(tau2pt)
-  metPT.Fill(metpt)
-  HT_Tot.Fill(HT_Total)
-
+  
   leadchtau1 = -1
   leadchtau2 = -1
 
@@ -305,7 +297,18 @@ for entry in range(0, numberOfEntries):
     leadchtau2 =  tau2_leadCH.PT/all_consti2_p4.Pt()
     #print("leadchtau2 is ",leadchtau2)
     ptratio_tau2.Fill(leadchtau2)
-  
+
+  if(not(leadchtau1 > 0.5 and leadchtau2 > 0.5)): continue
+  count_2 += 1
+  nEvents_2.Fill(1)
+  nEvents_2.Fill(2,count_2)
+
+  tauPT_1.Fill(tau1pt)
+  tauPT_2.Fill(tau2pt)
+  metPT.Fill(metpt)
+  HT_Tot.Fill(HT_Total)
+
+    
 
   gen1_idx = gen2_idx = -1           
   taucand1 = taucand2 = -1    
