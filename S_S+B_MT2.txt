@@ -14,9 +14,12 @@ h2 Integral after : 1868.55
 h7 Integral after : 696.339
 h8 Integral after : 988.036
 h9 Integral after : 0
-h10 Integral after : 1270
+h10 Integral after : 5618.27
 -------------------------------------------------------------------
-S/sqrt(S+B) is  : 21.09
+S/sqrt(S+B) for left handed signal, mass point [STOP,LSP]: [1000,1]  : 5.28417
+S/sqrt(S+B) for right handed signal, mass point [STOP,LSP]: [1000,1]  : 7.43552
+S/sqrt(S+B) for left handed signal, mass point [STOP,LSP]: [800,300]  : 0
+S/sqrt(S+B) for right handed signal, mass point [STOP,LSP]: [800,300]  : 37.6333
 coming before : 
 coming before 1A : 
 coming before 2A : 

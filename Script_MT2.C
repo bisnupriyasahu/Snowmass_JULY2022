@@ -51,7 +51,9 @@
   float DYXsec = 246.5; //pb
   float sXsec_300 =105.081; //pb
   float sXsec_500 = 6.68102; //pb
+  float sXsec_800 = 0.387393; //pb
   float sXsec_1000 = 0.0875693; //pb
+
 
 
   TTEvts = h_n1->GetBinContent(2);
@@ -60,8 +62,8 @@
   sEvts_1000_1_L = h_n7->GetBinContent(2);
   sEvts_1000_1_R = h_n8->GetBinContent(2);
   
-  sEvts_1000_100_L = h_n9->GetBinContent(2);
-  sEvts_1000_100_R = h_n10->GetBinContent(2);
+  sEvts_800_300_L = h_n9->GetBinContent(2);
+  sEvts_800_300_R = h_n10->GetBinContent(2);
 
   h1->SetFillColor(kGreen);
   h2->SetFillColor(kBlue);
@@ -106,8 +108,8 @@
     h7->Scale(luminosity * sXsec_1000 / sEvts_1000_1_L );
     h8->Scale(luminosity * sXsec_1000 / sEvts_1000_1_R );
 
-    h9->Scale(luminosity * sXsec_1000 / sEvts_1000_100_L );
-    h10->Scale(luminosity * sXsec_1000 / sEvts_1000_100_R );
+    h9->Scale(luminosity * sXsec_800 / sEvts_800_300_L );
+    h10->Scale(luminosity * sXsec_800 / sEvts_800_300_R );
 
   std::cout<<"h1 Integral after : "<< h1->Integral()<<std::endl;
   std::cout<<"h2 Integral after : "<< h2->Integral()<<std::endl;
@@ -116,12 +118,21 @@
   std::cout<<"h9 Integral after : "<< h9->Integral()<<std::endl;
   std::cout<<"h10 Integral after : "<< h10->Integral()<<std::endl;
 
-  float S = h7->Integral()+h8->Integral()+h9->Integral()+h10->Integral();
+  float S1 = h7->Integral();
+  float S2 = h8->Integral();
+  float S3 = h9->Integral();
+  float S4 = h10->Integral();
   float B = h1->Integral()+h2->Integral();
 
-  float eff = S/sqrt(S+B);
+  float sig_1000_1_L = S1/sqrt(S1+B);
+  float sig_1000_1_R = S2/sqrt(S2+B);
+  float sig_800_300_L = S3/sqrt(S3+B);
+  float sig_800_300_R = S4/sqrt(S4+B);
   std::cout<<"-------------------------------------------------------------------"<<std::endl;
-  std::cout<<"S/sqrt(S+B) is  : "<< eff <<std::endl;
+  std::cout<<"S/sqrt(S+B) for left handed signal, mass point [STOP,LSP]: [1000,1]  : "<< sig_1000_1_L <<std::endl;
+  std::cout<<"S/sqrt(S+B) for right handed signal, mass point [STOP,LSP]: [1000,1]  : "<< sig_1000_1_R <<std::endl;
+  std::cout<<"S/sqrt(S+B) for left handed signal, mass point [STOP,LSP]: [800,300]  : "<< sig_800_300_L <<std::endl;
+  std::cout<<"S/sqrt(S+B) for right handed signal, mass point [STOP,LSP]: [800,300]  : "<< sig_800_300_R <<std::endl;
 
     /* std::cout<<"h1 afterscaling : "<< h1->GetEntries()<<std::endl;
   std::cout<<"h2 afterscaling : "<< h2->GetEntries()<<std::endl;
@@ -168,7 +179,7 @@
    std::cout<<"coming before 1A : "<<std::endl;    
   //  stackHisto->SetStats(0);
   //stackHisto->SetTitle("");
-  stackHisto->GetXaxis()->SetRangeUser(0, 2000);
+  stackHisto->GetXaxis()->SetRangeUser(0, 800);
   stackHisto->GetXaxis()->SetTitle("MT");
  std::cout<<"coming before 2A : "<<std::endl;    
   stackHisto->GetYaxis()->SetTitle("Events(GeV)");
@@ -209,8 +220,8 @@
   leg->AddEntry(h6,"Signal[500,350] P_{#tau} = +1","l");
   */leg->AddEntry(h7,"Signal[1000,1] P_{#tau} = -1","l");
   leg->AddEntry(h8,"Signal[1000,1] P_{#tau} = +1","l");
-   leg->AddEntry(h9,"Signal[1000,100] P_{#tau} = -1","l");
-  leg->AddEntry(h10,"Signal[1000,100] P_{#tau} = +1","l");
+   leg->AddEntry(h9,"Signal[800,300] P_{#tau} = -1","l");
+  leg->AddEntry(h10,"Signal[800,300] P_{#tau} = +1","l");
   
   
   leg->SetFillColor(kWhite);
