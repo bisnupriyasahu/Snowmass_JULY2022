@@ -7,6 +7,7 @@ import math
 import re
 from ROOT import *
 import numpy as np
+import argparse
 from mt2 import mt2
 
 try:
@@ -28,6 +29,17 @@ except:
 
 inputFile = sys.argv[1]
 outputFile = sys.argv[2]
+stopqmass = sys.argv[3]
+LSPmass = sys.argv[4]
+parser = argparse.ArgumentParser()
+#parser.add_argument("-o",
+#                    help="out put file name,  example -o output.root ")
+#parser.add_argument("-mstop",
+#                    help="mass of STOP quark,  example -mstop 1000   ", action='store_true')
+#parser.add_argument("-mlsp",
+#                   help="mass of LSP,  example -mlsp 1   ", action='store_true')
+#args =  parser.parse_args()
+
 # Create chain of root trees
 chain = ROOT.TChain("Delphes")
 chain.Add(inputFile)
@@ -54,9 +66,18 @@ branchFatJet          = treeReader.UseBranch('JetPUPPIAK8')
 
 # Book histograms
 outputfile = ROOT.TFile(outputFile, 'RECREATE')
+outputfile.cd()
+stop_lsp = 'stop_'+stopqmass+'_lsp_'+LSPmass
+print("stop_lsp is ",stop_lsp)
+outputfile.mkdir(stop_lsp)
+outputfile.cd(stop_lsp)
+
 nEvents = ROOT.TH1F("nEvents", "total events", 10, 0.0, 10)
 nEvents_1 = ROOT.TH1F("nEvents_1", "total events", 10, 0.0, 10)
 nEvents_2 = ROOT.TH1F("nEvents_2", "total events", 10, 0.0, 10)
+nEvents_3 = ROOT.TH1F("nEvents_3", "total events", 10, 0.0, 10)
+nEvents_4 = ROOT.TH1F("nEvents_4", "total events", 10, 0.0, 10)
+nEvents_13 = ROOT.TH1F("nEvents_13", "total events", 10, 0.0, 10)
 nEntries_1 = ROOT.TH1F("nEntries_1", "total events", 10, 0.0, 10)
 nEntries_2 = ROOT.TH1F("nEntries_2", "total events", 10, 0.0, 10)
 nEntries_3 = ROOT.TH1F("nEntries_3", "total events", 10, 0.0, 10)
@@ -70,10 +91,44 @@ nEntries_10 = ROOT.TH1F("nEntries_10", "total events", 10, 0.0, 10)
 nEntries_11 = ROOT.TH1F("nEntries_11", "total events", 10, 0.0, 10)
 
 
+nEvts_bin1 = ROOT.TH1F("nEvts_bin1", "total events", 10, 0.0, 10)
+nEvts_bin2 = ROOT.TH1F("nEvts_bin2", "total events", 10, 0.0, 10)
+nEvts_bin3 = ROOT.TH1F("nEvts_bin3", "total events", 10, 0.0, 10)
+nEvts_bin4 = ROOT.TH1F("nEvts_bin4", "total events", 10, 0.0, 10)
+nEvts_bin5 = ROOT.TH1F("nEvts_bin5", "total events", 10, 0.0, 10)
+nEvts_bin6 = ROOT.TH1F("nEvts_bin6", "total events", 10, 0.0, 10)
+nEvts_bin7 = ROOT.TH1F("nEvts_bin7", "total events", 10, 0.0, 10)
+nEvts_bin8 = ROOT.TH1F("nEvts_bin8", "total events", 10, 0.0, 10)
+nEvts_bin9 = ROOT.TH1F("nEvts_bin9", "total events", 10, 0.0, 10)
+nEvts_bin10 = ROOT.TH1F("nEvts_bin10", "total events", 10, 0.0, 10)
+
+nEvts_bin11 = ROOT.TH1F("nEvts_bin11", "total events", 10, 0.0, 10)
+nEvts_bin12 = ROOT.TH1F("nEvts_bin12", "total events", 10, 0.0, 10)
+nEvts_bin13 = ROOT.TH1F("nEvts_bin13", "total events", 10, 0.0, 10)
+nEvts_bin14 = ROOT.TH1F("nEvts_bin14", "total events", 10, 0.0, 10)
+nEvts_bin15 = ROOT.TH1F("nEvts_bin15", "total events", 10, 0.0, 10)
+nEvts_bin16 = ROOT.TH1F("nEvts_bin16", "total events", 10, 0.0, 10)
+nEvts_bin17 = ROOT.TH1F("nEvts_bin17", "total events", 10, 0.0, 10)
+nEvts_bin18 = ROOT.TH1F("nEvts_bin18", "total events", 10, 0.0, 10)
+nEvts_bin19 = ROOT.TH1F("nEvts_bin19", "total events", 10, 0.0, 10)
+nEvts_bin20 = ROOT.TH1F("nEvts_bin20", "total events", 10, 0.0, 10)
+
+nEvts_bin21 = ROOT.TH1F("nEvts_bin21", "total events", 10, 0.0, 10)
+nEvts_bin22 = ROOT.TH1F("nEvts_bin22", "total events", 10, 0.0, 10)
+nEvts_bin23 = ROOT.TH1F("nEvts_bin23", "total events", 10, 0.0, 10)
+nEvts_bin24 = ROOT.TH1F("nEvts_bin24", "total events", 10, 0.0, 10)
+nEvts_bin25 = ROOT.TH1F("nEvts_bin25", "total events", 10, 0.0, 10)
+nEvts_bin26 = ROOT.TH1F("nEvts_bin26", "total events", 10, 0.0, 10)
+nEvts_bin27 = ROOT.TH1F("nEvts_bin27", "total events", 10, 0.0, 10)
+nEvts_bin28 = ROOT.TH1F("nEvts_bin28", "total events", 10, 0.0, 10)
+nEvts_bin29 = ROOT.TH1F("nEvts_bin29", "total events", 10, 0.0, 10)
+nEvts_bin30 = ROOT.TH1F("nEvts_bin30", "total events", 10, 0.0, 10)
+
 tauPT_1 = ROOT.TH1F("tau1_pt", "tau P_{T}", 100, 30.0, 5000.0)
 tauPT_2 = ROOT.TH1F("tau2_pt", "tau P_{T}", 100, 30.0, 5000.0)
 metPT = ROOT.TH1F("MET", "MET", 50, 0.0, 5000.0)
 HT_Tot = ROOT.TH1F("HT", "Sum P_{T}", 100, 0.0, 5000.0)
+HT_Tot_1 = ROOT.TH1F("HT_1", "Sum P_{T}", 100, 0.0, 5000.0)
 ptratio_tau1 = ROOT.TH1F("ptratio_tau1", "P_{T} Ratio", 50, 0.0, 2.0)
 ptratio_tau2 = ROOT.TH1F("ptratio_tau2", "P_{T} Ratio", 50, 0.0, 2.0)
 
@@ -152,6 +207,37 @@ count_8 = 0
 count_9 = 0
 count_10 = 0
 count_11 = 0
+count_13 = 0
+Bin_1 = 0
+Bin_2 = 0
+Bin_3 = 0
+Bin_4 = 0
+Bin_5 = 0
+Bin_6 = 0
+Bin_7 = 0
+Bin_8 = 0
+Bin_9 = 0
+Bin_10 = 0
+Bin_11 = 0
+Bin_12 = 0
+Bin_13 = 0
+Bin_14 = 0
+Bin_15 = 0
+Bin_16 = 0
+Bin_17 = 0
+Bin_18 = 0
+Bin_19 = 0
+Bin_20 = 0
+Bin_21 = 0
+Bin_22 = 0
+Bin_23 = 0
+Bin_24 = 0
+Bin_25 = 0
+Bin_26 = 0
+Bin_27 = 0
+Bin_28 = 0
+Bin_29 = 0
+Bin_30 = 0
 
 for entry in range(0, numberOfEntries):
   # Load selected branches with data from specified event
@@ -170,7 +256,7 @@ for entry in range(0, numberOfEntries):
   if(not(STOP_idx >= 0 and LSP_idx>= 0)): continue
   STOP = branchParticle.At(STOP_idx)
   LSP = branchParticle.At(LSP_idx)
-  if(not(STOP.Mass == 1000 and LSP.Mass == 1)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
+  if(not(STOP.Mass == stopqmass and LSP.Mass == LSPmass)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
   count_1 += 1
   nEvents_1.Fill(1)
   nEvents_1.Fill(2,count_1)
@@ -235,7 +321,15 @@ for entry in range(0, numberOfEntries):
   #print(" imet_idx", imet_idx)
  
   if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
-  
+
+  #tauPT_1.Fill(tau1pt)
+  #tauPT_2.Fill(tau2pt)
+  #  metP.Fill(metpt)
+  #HT_Tot_1.Fill(HT_Total)
+  count_2 += 1
+  nEvents_2.Fill(1)
+  nEvents_2.Fill(2,count_2)
+
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
   met_pt = branchPuppiMissingET.At(imet_idx)
@@ -246,7 +340,7 @@ for entry in range(0, numberOfEntries):
   leadchtau1 = -1
   leadchtau2 = -1
 
-
+  ######----------leading chtau2 --------------#########
   isLeptonic = False  
   tau1_leadCH = None
   all_consti1_p4 = TLorentzVector()
@@ -272,6 +366,8 @@ for entry in range(0, numberOfEntries):
     print("leadchtau1 in function before gen match: ", leadchtau1)
     ptratio_tau1.Fill(leadchtau1)
 
+
+  ######----------leading chtau2 --------------#########
   isLeptonic2 = False  
   tau2_leadCH = None
   all_consti2_p4= TLorentzVector()
@@ -298,17 +394,187 @@ for entry in range(0, numberOfEntries):
     #print("leadchtau2 is ",leadchtau2)
     ptratio_tau2.Fill(leadchtau2)
 
-  if(not(leadchtau1 > 0.5 and leadchtau2 > 0.5)): continue
-  count_2 += 1
-  nEvents_2.Fill(1)
-  nEvents_2.Fill(2,count_2)
+    
+  ##########-----MT-----------#######
+  tau1_px = Tltau1_p4.Px()
+  tau1_py = Tltau1_p4.Py()
+  tau1_m = tau_1.Mass
+  tau2_px = Tltau2_p4.Px()
+  tau2_py = Tltau2_p4.Py()
+  tau2_m = tau_2.Mass
+  MET_px = Met_PT*(math.cos(Met_Phi))
+  MET_py = Met_PT*(math.sin(Met_Phi))
+  MT_ = mt2(
+    tau1_m,tau1_px,tau1_py,
+    tau2_m,tau2_px,tau2_py,
+    MET_px,MET_py,
+    0,0)
+  MT.Fill(MT_)
+  
+
+  if(leadchtau1 <= 0.5 and leadchtau2 <= 0.5):
+    count_3 += 1
+    nEvents_3.Fill(1)
+    nEvents_3.Fill(2,count_3)
+    if(metpt >= 50 and  metpt < 200):
+      if(MT < 40):
+        if(HT >= 100 and HT < 300):
+          Bin_1 += 1
+          nEvts_bin1.Fill(1)
+          nEvts_bin1.Fill(2,Bin_1)
+        elif(HT >= 300 and HT < 700): 
+          Bin_2 += 1
+          nEvts_bin2.Fill(1)
+          nEvts_bin2.Fill(2,Bin_2)
+        elif(HT >= 700):
+          Bin_3 += 1
+          nEvts_bin3.Fill(1)
+          nEvts_bin3.Fill(2,Bin_3)
+      
+      elif(MT >= 40 and MT < 80 ):
+        if(HT >= 100 and HT < 300):
+          Bin_6 += 1
+          nEvts_bin6.Fill(1)
+          nEvts_bin6.Fill(2,Bin_6)
+        elif(HT >= 300 and HT < 700): 
+          Bin_7 += 1
+          nEvts_bin7.Fill(1)
+          nEvts_bin7.Fill(2,Bin_7)
+        elif(HT >= 700):
+          Bin_8 += 1
+          nEvts_bin8.Fill(1)
+          nEvts_bin8.Fill(2,Bin_8)
+        
+      elif(MT >= 80):
+        if(HT >= 100 and HT < 300):
+          Bin_11 += 1
+          nEvts_bin11.Fill(1)
+          nEvts_bin11.Fill(2,Bin_11)
+        elif(HT >= 300 and HT < 700): 
+          Bin_12 += 1
+          nEvts_bin12.Fill(1)
+          nEvts_bin12.Fill(2,Bin_12)
+        elif(HT >= 700):
+          Bin_13 += 1
+          nEvts_bin13.Fill(1)
+          nEvts_bin13.Fill(2,Bin_13)
+     
+    elif(metpt >= 200):   ############         if(metpt >= 50 and metpt < 200):
+      if(MT < 40):
+        if(HT >= 100 and HT < 700):
+          Bin_4 += 1
+          nEvts_bin4.Fill(1)
+          nEvts_bin4.Fill(2,Bin_4)
+        elif(HT >= 700):
+          Bin_5 += 1
+          nEvts_bin5.Fill(1)
+          nEvts_bin5.Fill(2,Bin_5)
+      
+      elif(MT >= 40 and MT < 80 ):
+        if(HT >= 100 and HT < 700):
+          Bin_9 += 1
+          nEvts_bin9.Fill(1)
+          nEvts_bin9.Fill(2,Bin_9)
+        elif(HT >= 700):
+          Bin_10 += 1
+          nEvts_bin10.Fill(1)
+          nEvts_bin10.Fill(2,Bin_10)
+          
+      elif(MT >= 80):
+        if(HT >= 100 and HT < 700):
+          Bin_14 += 1
+          nEvts_bin14.Fill(1)
+          nEvts_bin14.Fill(2,Bin_14)
+        elif(HT >= 700):
+          Bin_15 += 1
+          nEvts_bin15.Fill(1)
+          nEvts_bin15.Fill(2,Bin_15)
+          
+          ######################       if(leadchtau1 <= 0.5 and leadchtau2 <= 0.5)):
+  else:
+    count_4 += 1
+    nEvents_4.Fill(1)
+    nEvents_4.Fill(2,count_4)
+    if(metpt >= 50 and  metpt < 200):
+      if(MT < 40):
+        if(HT >= 100 and HT < 300):
+          Bin_16 += 1
+          nEvts_bin16.Fill(1)
+          nEvts_bin16.Fill(2,Bin_16)
+        elif(HT >= 300 and HT < 700): 
+          Bin_17 += 1
+          nEvts_bin17.Fill(1)
+          nEvts_bin17.Fill(2,Bin_17)
+        elif(HT >= 700):
+          Bin_18 += 1
+          nEvts_bin18.Fill(1)
+          nEvts_bin18.Fill(2,Bin_18)
+      
+      elif(MT >= 40 and MT < 80 ):
+        if(HT >= 100 and HT < 300):
+          Bin_21 += 1
+          nEvts_bin21.Fill(1)
+          nEvts_bin21.Fill(2,Bin_21)
+        elif(HT >= 300 and HT < 700): 
+          Bin_22 += 1
+          nEvts_bin22.Fill(1)
+          nEvts_bin22.Fill(2,Bin_22)
+        elif(HT >= 700):
+          Bin_23 += 1
+          nEvts_bin23.Fill(1)
+          nEvts_bin23.Fill(2,Bin_23)
+        
+      elif(MT >= 80):
+        if(HT >= 100 and HT < 300):
+          Bin_26 += 1
+          nEvts_bin26.Fill(1)
+          nEvts_bin26.Fill(2,Bin_26)
+        elif(HT >= 300 and HT < 700): 
+          Bin_27 += 1
+          nEvts_bin27.Fill(1)
+          nEvts_bin27.Fill(2,Bin_27)
+        elif(HT >= 700):
+          Bin_28 += 1
+          nEvts_bin28.Fill(1)
+          nEvts_bin28.Fill(2,Bin_28)
+
+    elif(metpt >= 200):   ############         if(metpt >= 50 and metpt < 200):
+      if(MT < 40):
+        if(HT >= 100 and HT < 700):
+          Bin_19 += 1
+          nEvts_bin19.Fill(1)
+          nEvts_bin19.Fill(2,Bin_19)
+        elif(HT >= 700):
+          Bin_20 += 1
+          nEvts_bin20.Fill(1)
+          nEvts_bin20.Fill(2,Bin_20)
+      
+      elif(MT >= 40 and MT < 80 ):
+        if(HT >= 100 and HT < 700):
+          Bin_24 += 1
+          nEvts_bin24.Fill(1)
+          nEvts_bin24.Fill(2,Bin_24)
+        elif(HT >= 700):
+          Bin_25 += 1
+          nEvts_bin25.Fill(1)
+          nEvts_bin25.Fill(2,Bin_25)
+          
+      elif(MT >= 80):
+        if(HT >= 100 and HT < 700):
+          Bin_29 += 1
+          nEvts_bin29.Fill(1)
+          nEvts_bin29.Fill(2,Bin_29)
+        elif(HT >= 700):
+          Bin_30 += 1
+          nEvts_bin30.Fill(1)
+          nEvts_bin30.Fill(2,Bin_30)
+
+
 
   tauPT_1.Fill(tau1pt)
   tauPT_2.Fill(tau2pt)
   metPT.Fill(metpt)
   HT_Tot.Fill(HT_Total)
-
-    
 
   gen1_idx = gen2_idx = -1           
   taucand1 = taucand2 = -1    
@@ -329,8 +595,6 @@ for entry in range(0, numberOfEntries):
     gen_tau_p4 = TLorentzVector()
     if(not(abs(gen.PID) == 15)): continue
     count_7 += 1
-    nEntries_7.Fill(1)
-    nEntries_7.Fill(2,count_7)
     gen_tau = igen
     gen_tau_p4.SetPtEtaPhiM(gen.PT, gen.Eta, gen.Phi, gen.Mass)
       
@@ -343,19 +607,9 @@ for entry in range(0, numberOfEntries):
       dr_gentau = gen_p4.DeltaR(gen_tau_p4)
       #if(jgen == igen or dr_gentau > 0.1   ): continue
       if(dr_gentau > 0.1   ): continue
-      count_8 += 1
-      nEntries_8.Fill(1)
-      nEntries_8.Fill(2,count_8)
       if((abs(genlep.PID) ==  11) or (abs(genlep.PID) ==  13) ): continue
-      
-      count_9 += 1
-      nEntries_9.Fill(1)
-      nEntries_9.Fill(2,count_9)
-     
       dr_1 = gen_tau_p4.DeltaR(Tltau1_p4)
       dr_2 = gen_tau_p4.DeltaR(Tltau2_p4)
-    
-
       if(dr_1 < 0.3 and dr_1 < min_dr_1 ):
         min_dr_1 = dr_1
         taucand1 = get_gentau(igen)
@@ -390,15 +644,10 @@ for entry in range(0, numberOfEntries):
   if(gen_1 is not None):
     print("gen1_index ", taucand1)
     #gen_1PT = gen_1.PT
-    count_3 += 1
+    
     #nEntries_3.Fill(1)
     nEntries_3.Fill(2,count_3)
-    print("count_3  ",count_3)  
-    
     genmatch_ptratio_tau1.Fill(leadchtau1)
-    #print (leadchtau1)
-    
-    
     if (gen_1PT > 10  and gen_1PT < 30):
       t1_R_1030.Fill(leadchtau1)
 
@@ -429,14 +678,9 @@ for entry in range(0, numberOfEntries):
     if (gen_1PT > 380 and gen_1PT < 500):
       t1_R_380500.Fill(leadchtau1)
 
-
-
   else: 
     #print (leadchtau1)
     notgenmatch_ptratio_tau1.Fill(leadchtau1)
-    count_4 += 1
-    nEntries_4.Fill(1)
-    nEntries_4.Fill(2,count_4)
     if (gen_1PT > 10  and gen_1PT < 30):
       t1_notgR_1030.Fill(leadchtau1)
 
@@ -469,14 +713,7 @@ for entry in range(0, numberOfEntries):
 
 
   if (gen_2 is not None):
-    print("gen2_index ", taucand2)
-    #print("gen_2 pt is : ",gen_2.PT)
     gen_2PT = gen_2.PT  
-    count_5 += 1
-    print("count_5 ", count_5)
-    nEntries_5.Fill(1)
-    nEntries_5.Fill(2,count_5)
-   
     genmatch_ptratio_tau2.Fill(leadchtau2)
     if (gen_2PT > 30  and gen_2PT < 50):
       #print("gen_2 pt3050 is : ",gen_2PT)
@@ -514,12 +751,6 @@ for entry in range(0, numberOfEntries):
   
 
   else:
-    #print (leadchtau2)
-    count_6 += 1
-    nEntries_6.Fill(1)
-    nEntries_6.Fill(2,count_6)
-    notgenmatch_ptratio_tau2.Fill(leadchtau2)
-    #gen_2PT = gen_2.PT  
     if (gen_2PT > 10  and gen_2PT < 30):
       t2_notgR_1030.Fill(leadchtau2)
 
@@ -552,9 +783,6 @@ for entry in range(0, numberOfEntries):
 
 
 
-
-
-  
   lep_p4 = TLorentzVector()
   lep1_dr = lep2_dr = -1
   min_dr = 999.9 
@@ -574,35 +802,18 @@ for entry in range(0, numberOfEntries):
   #print("min dr is : ",min_dr)
 
 
-  tau1_px = Tltau1_p4.Px()
-  tau1_py = Tltau1_p4.Py()
-  tau1_m = tau_1.Mass
-  #print("tau1_px and tau1_py", tau1_px, tau1_py)
 
-  tau2_px = Tltau2_p4.Px()
-  tau2_py = Tltau2_p4.Py()
-  tau2_m = tau_2.Mass
-  #print("tau2_px and tau2_py", tau2_px, tau2_py)
-
-  MET_px = Met_PT*(math.cos(Met_Phi))
-  MET_py = Met_PT*(math.sin(Met_Phi))
-  #print("Met_px and MET_py", MET_px, MET_py)
-
-
-  MT_ = mt2(
-    tau1_m,tau1_px,tau1_py,
-    tau2_m,tau2_px,tau2_py,
-    MET_px,MET_py,
-    0,0)
-  #print("MT is : ", MT_)
-  MT.Fill(MT_)
-
+  
+  
 
 #cnv.cd(2)
-outputfile.cd()
+#outputfile.cd()
 nEvents.Write()
 nEvents_1.Write()
 nEvents_2.Write()
+nEvents_3.Write()
+nEvents_4.Write()
+nEvents_13.Write()
 
 nEntries_1.Write()
 nEntries_2.Write()
@@ -616,11 +827,45 @@ nEntries_6.Write()
 nEntries_10.Write()
 nEntries_11.Write()
 
+nEvts_bin1.Write()
+nEvts_bin2.Write()
+nEvts_bin3.Write()
+nEvts_bin4.Write()
+nEvts_bin5.Write()
+nEvts_bin6.Write()
+nEvts_bin7.Write()
+nEvts_bin8.Write()
+nEvts_bin9.Write()
+nEvts_bin10.Write()
+
+nEvts_bin11.Write()
+nEvts_bin12.Write()
+nEvts_bin13.Write()
+nEvts_bin14.Write()
+nEvts_bin15.Write()
+nEvts_bin16.Write()
+nEvts_bin17.Write()
+nEvts_bin18.Write()
+nEvts_bin19.Write()
+nEvts_bin20.Write()
+
+nEvts_bin21.Write()
+nEvts_bin22.Write()
+nEvts_bin23.Write()
+nEvts_bin24.Write()
+nEvts_bin25.Write()
+nEvts_bin26.Write()
+nEvts_bin27.Write()
+nEvts_bin28.Write()
+nEvts_bin29.Write()
+nEvts_bin30.Write()
+
 
 tauPT_1.Write()
 tauPT_2.Write()
 metPT.Write()
 HT_Tot.Write()
+HT_Tot_1.Write()
 ptratio_tau1.Write()
 ptratio_tau2.Write()
 genmatch_ptratio_tau1.Write()
