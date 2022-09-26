@@ -9,11 +9,12 @@ from ROOT import *
 import numpy as np
 import argparse
 from mt2 import mt2
+from collections import OrderedDict
 
-try:
-  input = raw_input
-except:
-  pass
+#try:
+#  input = raw_input
+#except:
+#  pass
 
 if len(sys.argv) < 2:
   print(" Usage: Example1.py input_file")
@@ -242,24 +243,28 @@ Bin_30 = 0
 for entry in range(0, numberOfEntries):
   # Load selected branches with data from specified event
   treeReader.ReadEntry(entry)
-  nEvents.Fill(1)
-  nEvents.Fill(2,numberOfEntries)
+  #nEvents.Fill(1)
+  nEvents.SetBinContent(2,numberOfEntries)
   # Choose STOP and LSP mass
-  # STOP_idx = -1
+  #STOP_idx = -1
   #LSP_idx = -1
-
-  #for igen,gen in enumerate(branchParticle):
-  # if(abs(gen.PID) == 1000006):
-  #   STOP_idx = igen
-  # if(abs(gen.PID) == 1000022 and igen != STOP_idx):
-  #   LSP_idx = igen                                                                                             
-  #if(not(STOP_idx >= 0 and LSP_idx>= 0)): continue
-  #STOP = branchParticle.At(STOP_idx)
-  #LSP = branchParticle.At(LSP_idx)
-  #if(not(STOP.Mass == stopqmass and LSP.Mass == LSPmass)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
+  '''
+  for igen,gen in enumerate(branchParticle):
+    if(abs(gen.PID) == 1000006):
+      STOP_idx = igen
+    if(abs(gen.PID) == 1000022 and igen != STOP_idx):
+      LSP_idx = igen                                                                                             
+  if(not(STOP_idx >= 0 and LSP_idx>= 0)): continue
+  STOP = branchParticle.At(STOP_idx)
+  LSP = branchParticle.At(LSP_idx)
+  print("coming inside stop and LSp loop")
+  if(not(STOP.Mass == 1000 and LSP.Mass == 1)): continue #[STOP,LSP] = [1000,1], [300,1], [500,350]
+  print("coming inside after the selection stop and LSp loop")
+  
+  '''
   count_1 += 1
-  nEvents_1.Fill(1)
-  nEvents_1.Fill(2,count_1)
+  #  nEvents_1.Fill(1)
+  nEvents_1.SetBinContent(2,count_1)
  
   # Take first jet and get tau1 and tau1 
   tau1_idx = -1
@@ -327,8 +332,8 @@ for entry in range(0, numberOfEntries):
   #  metP.Fill(metpt)
   HT_Tot.Fill(HT_Total)
   count_2 += 1
-  nEvents_2.Fill(1)
-  nEvents_2.Fill(2,count_2)
+  #nEvents_2.Fill(1)
+  nEvents_2.SetBinContent(2,count_2)
 
   tau_1 = branchJet.At(tau1_idx)
   tau_2 = branchJet.At(tau2_idx)
@@ -414,160 +419,160 @@ for entry in range(0, numberOfEntries):
   #####-------------30 -Binns ------------########
   if(leadchtau1 <= 0.5 and leadchtau2 <= 0.5):
     count_3 += 1
-    nEvents_3.Fill(1)
-    nEvents_3.Fill(2,count_3)
+    #nEvents_3.SetBinContent(1)
+    nEvents_3.SetBinContent(2,count_3)
     if(metpt >= 50 and  metpt < 200):
       if(MT_ < 40):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_1 += 1
-          nEvts_bin1.Fill(1)
-          nEvts_bin1.Fill(2,Bin_1)
+          #nEvts_bin1.SetBinContent(1)
+          nEvts_bin1.SetBinContent(2,Bin_1)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_2 += 1
-          nEvts_bin2.Fill(1)
-          nEvts_bin2.Fill(2,Bin_2)
+          #nEvts_bin2.SetBinContent(1)
+          nEvts_bin2.SetBinContent(2,Bin_2)
         elif(HT_Total >= 700):
           Bin_3 += 1
-          nEvts_bin3.Fill(1)
-          nEvts_bin3.Fill(2,Bin_3)
+          #nEvts_bin3.SetBinContent(1)
+          nEvts_bin3.SetBinContent(2,Bin_3)
       
       elif(MT_ >= 40 and MT_ < 80 ):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_6 += 1
-          nEvts_bin6.Fill(1)
-          nEvts_bin6.Fill(2,Bin_6)
+          #nEvts_bin6.SetBinContent(1)
+          nEvts_bin6.SetBinContent(2,Bin_6)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_7 += 1
-          nEvts_bin7.Fill(1)
-          nEvts_bin7.Fill(2,Bin_7)
+          #nEvts_bin7.SetBinContent(1)
+          nEvts_bin7.SetBinContent(2,Bin_7)
         elif(HT_Total >= 700):
           Bin_8 += 1
-          nEvts_bin8.Fill(1)
-          nEvts_bin8.Fill(2,Bin_8)
+          #nEvts_bin8.SetBinContent(1)
+          nEvts_bin8.SetBinContent(2,Bin_8)
         
       elif(MT_ >= 80):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_11 += 1
-          nEvts_bin11.Fill(1)
-          nEvts_bin11.Fill(2,Bin_11)
+          #nEvts_bin11.SetBinContent(1)
+          nEvts_bin11.SetBinContent(2,Bin_11)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_12 += 1
-          nEvts_bin12.Fill(1)
-          nEvts_bin12.Fill(2,Bin_12)
+          #nEvts_bin12.SetBinContent(1)
+          nEvts_bin12.SetBinContent(2,Bin_12)
         elif(HT_Total >= 700):
           Bin_13 += 1
-          nEvts_bin13.Fill(1)
-          nEvts_bin13.Fill(2,Bin_13)
+          #nEvts_bin13.SetBinContent(1)
+          nEvts_bin13.SetBinContent(2,Bin_13)
      
     elif(metpt >= 200):   ############         if(metpt >= 50 and metpt < 200):
       if(MT_ < 40):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_4 += 1
-          nEvts_bin4.Fill(1)
-          nEvts_bin4.Fill(2,Bin_4)
+          #nEvts_bin4.SetBinContent(1)
+          nEvts_bin4.SetBinContent(2,Bin_4)
         elif(HT_Total >= 700):
           Bin_5 += 1
-          nEvts_bin5.Fill(1)
-          nEvts_bin5.Fill(2,Bin_5)
+          #nEvts_bin5.SetBinContent(1)
+          nEvts_bin5.SetBinContent(2,Bin_5)
       
       elif(MT_ >= 40 and MT_ < 80 ):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_9 += 1
-          nEvts_bin9.Fill(1)
-          nEvts_bin9.Fill(2,Bin_9)
+          #nEvts_bin9.SetBinContent(1)
+          nEvts_bin9.SetBinContent(2,Bin_9)
         elif(HT_Total >= 700):
           Bin_10 += 1
-          nEvts_bin10.Fill(1)
-          nEvts_bin10.Fill(2,Bin_10)
+          #nEvts_bin10.SetBinContent(1)
+          nEvts_bin10.SetBinContent(2,Bin_10)
           
       elif(MT_  >= 80):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_14 += 1
-          nEvts_bin14.Fill(1)
-          nEvts_bin14.Fill(2,Bin_14)
+          #nEvts_bin14.SetBinContent(1)
+          nEvts_bin14.SetBinContent(2,Bin_14)
         elif(HT_Total >= 700):
           Bin_15 += 1
-          nEvts_bin15.Fill(1)
-          nEvts_bin15.Fill(2,Bin_15)
+          #nEvts_bin15.SetBinContent(1)
+          nEvts_bin15.SetBinContent(2,Bin_15)
           
           ######################       if(leadchtau1 <= 0.5 and leadchtau2 <= 0.5)):
   else:
     count_4 += 1
-    nEvents_4.Fill(1)
-    nEvents_4.Fill(2,count_4)
+    #nEvents_4.SetBinContent(1)
+    nEvents_4.SetBinContent(2,count_4)
     if(metpt >= 50 and  metpt < 200):
       if(MT_ < 40):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_16 += 1
-          nEvts_bin16.Fill(1)
-          nEvts_bin16.Fill(2,Bin_16)
+          #nEvts_bin16.SetBinContent(1)
+          nEvts_bin16.SetBinContent(2,Bin_16)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_17 += 1
-          nEvts_bin17.Fill(1)
-          nEvts_bin17.Fill(2,Bin_17)
+          #nEvts_bin17.SetBinContent(1)
+          nEvts_bin17.SetBinContent(2,Bin_17)
         elif(HT_Total >= 700):
           Bin_18 += 1
-          nEvts_bin18.Fill(1)
-          nEvts_bin18.Fill(2,Bin_18)
+          #nEvts_bin18.SetBinContent(1)
+          nEvts_bin18.SetBinContent(2,Bin_18)
       
       elif(MT_ >= 40 and MT_ < 80 ):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_21 += 1
-          nEvts_bin21.Fill(1)
-          nEvts_bin21.Fill(2,Bin_21)
+          #nEvts_bin21.SetBinContent(1)
+          nEvts_bin21.SetBinContent(2,Bin_21)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_22 += 1
-          nEvts_bin22.Fill(1)
-          nEvts_bin22.Fill(2,Bin_22)
+          #nEvts_bin22.SetBinContent(1)
+          nEvts_bin22.SetBinContent(2,Bin_22)
         elif(HT_Total >= 700):
           Bin_23 += 1
-          nEvts_bin23.Fill(1)
-          nEvts_bin23.Fill(2,Bin_23)
+          #nEvts_bin23.SetBinContent(1)
+          nEvts_bin23.SetBinContent(2,Bin_23)
         
       elif(MT_ >= 80):
         if(HT_Total >= 100 and HT_Total < 300):
           Bin_26 += 1
-          nEvts_bin26.Fill(1)
-          nEvts_bin26.Fill(2,Bin_26)
+          #nEvts_bin26.SetBinContent(1)
+          nEvts_bin26.SetBinContent(2,Bin_26)
         elif(HT_Total >= 300 and HT_Total < 700): 
           Bin_27 += 1
-          nEvts_bin27.Fill(1)
-          nEvts_bin27.Fill(2,Bin_27)
+          #nEvts_bin27.SetBinContent(1)
+          nEvts_bin27.SetBinContent(2,Bin_27)
         elif(HT_Total >= 700):
           Bin_28 += 1
-          nEvts_bin28.Fill(1)
-          nEvts_bin28.Fill(2,Bin_28)
+          #nEvts_bin28.SetBinContent(1)
+          nEvts_bin28.SetBinContent(2,Bin_28)
 
     elif(metpt >= 200):   ############         if(metpt >= 50 and metpt < 200):
       if(MT_ < 40):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_19 += 1
-          nEvts_bin19.Fill(1)
-          nEvts_bin19.Fill(2,Bin_19)
+          #nEvts_bin19.SetBinContent(1)
+          nEvts_bin19.SetBinContent(2,Bin_19)
         elif(HT_Total >= 700):
           Bin_20 += 1
-          nEvts_bin20.Fill(1)
-          nEvts_bin20.Fill(2,Bin_20)
+          n#Evts_bin20.SetBinContent(1)
+          nEvts_bin20.SetBinContent(2,Bin_20)
       
       elif(MT_ >= 40 and MT_ < 80 ):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_24 += 1
-          nEvts_bin24.Fill(1)
-          nEvts_bin24.Fill(2,Bin_24)
+          #nEvts_bin24.SetBinContent(1)
+          nEvts_bin24.SetBinContent(2,Bin_24)
         elif(HT_Total >= 700):
           Bin_25 += 1
-          nEvts_bin25.Fill(1)
-          nEvts_bin25.Fill(2,Bin_25)
+          #nEvts_bin25.SetBinContent(1)
+          nEvts_bin25.SetBinContent(2,Bin_25)
           
       elif(MT_ >= 80):
         if(HT_Total >= 100 and HT_Total < 700):
           Bin_29 += 1
-          nEvts_bin29.Fill(1)
-          nEvts_bin29.Fill(2,Bin_29)
+          #nEvts_bin29.SetBinContent(1)
+          nEvts_bin29.SetBinContent(2,Bin_29)
         elif(HT_Total >= 700):
           Bin_30 += 1
-          nEvts_bin30.Fill(1)
-          nEvts_bin30.Fill(2,Bin_30)
+          #nEvts_bin30.SetBinContent(1)
+          nEvts_bin30.SetBinContent(2,Bin_30)
 
 
 
