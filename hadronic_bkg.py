@@ -75,6 +75,12 @@ outputfile.cd()
 
 nEvents = ROOT.TH1F("nEvents", "total events", 10, 0.0, 10)
 nEvents_1 = ROOT.TH1F("nEvents_1", "total events", 10, 0.0, 10)
+nEvents_1a = ROOT.TH1F("nEvents_1a", "total events", 10, 0.0, 10)
+nEvents_1b = ROOT.TH1F("nEvents_1b", "total events", 10, 0.0, 10)
+nEvents_1c = ROOT.TH1F("nEvents_1c", "total events", 10, 0.0, 10)
+nEvents_1d = ROOT.TH1F("nEvents_1d", "total events", 10, 0.0, 10)
+nEvents_1e = ROOT.TH1F("nEvents_1e", "total events", 10, 0.0, 10)
+nEvents_1f = ROOT.TH1F("nEvents_1f", "total events", 10, 0.0, 10)
 nEvents_2 = ROOT.TH1F("nEvents_2", "total events", 10, 0.0, 10)
 nEvents_3 = ROOT.TH1F("nEvents_3", "total events", 10, 0.0, 10)
 nEvents_4 = ROOT.TH1F("nEvents_4", "total events", 10, 0.0, 10)
@@ -198,6 +204,12 @@ def get_gentau(igen):
 
 # Loop over all events
 count_1 = 0
+count_1a = 0
+count_1b = 0
+count_1c = 0
+count_1d = 0
+count_1e = 0
+count_1f = 0
 count_2 = 0
 count_3 = 0
 count_4 = 0
@@ -263,7 +275,6 @@ for entry in range(0, numberOfEntries):
   
   '''
   count_1 += 1
-  #  nEvents_1.Fill(1)
   nEvents_1.SetBinContent(2,count_1)
  
   # Take first jet and get tau1 and tau1 
@@ -275,6 +286,9 @@ for entry in range(0, numberOfEntries):
   i = 0
   #print("coming in entries,", entry)
   for iTau1, tau1 in enumerate(branchJet) :
+    count_1a += 1
+    nEvents_1a.SetBinContent(2,count_1a)
+
     i +=1
     #print("coming inside tau1")
     tautagOk1 = ( tau1.TauTag & (1 << 2) )
@@ -292,6 +306,9 @@ for entry in range(0, numberOfEntries):
           tau1_tau2_HT = HT
   
   if (not(tau1_idx >= 0 and tau2_idx >= 0)): continue
+  count_1b += 1
+  nEvents_1b.SetBinContent(2,count_1b)
+    
   tau1 = branchJet.At(tau1_idx)
   tau2 = branchJet.At(tau2_idx)
   if(tau1.PT < tau2.PT):
@@ -301,6 +318,8 @@ for entry in range(0, numberOfEntries):
   Tltau1_p4.SetPtEtaPhiM(tau1.PT, tau1.Eta, tau1.Phi, tau1.Mass)
   Tltau2_p4.SetPtEtaPhiM(tau2.PT, tau2.Eta, tau2.Phi, tau2.Mass)
   tau1tau2_m = (Tltau1_p4 + Tltau2_p4).M()
+  count_1c += 1
+  nEvents_1c.SetBinContent(2,count_1c)
 
   btag_idx = -1    
   for ibjet, bjet in enumerate(branchJet) :
@@ -309,12 +328,19 @@ for entry in range(0, numberOfEntries):
     btagok = (bjet.BTag & (1 << 1) )
     if (bjet.PT > 30 and abs(bjet.Eta) < 5. and btagok):
       btag_idx = ibjet
-  #print( "btag index" , btag_idx)
+      #print( "btag index" , btag_idx)
+    
+  count_1d += 1
+  nEvents_1d.SetBinContent(2,count_1d)
+
 
   HT_Total = -1
   for ijet, jet in enumerate(branchJet) :
     HT_Total += jet.PT
   #print("Total HT", HT_Total)
+  count_1e += 1
+  nEvents_1e.SetBinContent(2,count_1e)
+  
     
   Met_PT = -1
   imet_idx = -1
@@ -324,7 +350,9 @@ for entry in range(0, numberOfEntries):
     Met_Phi = met.Phi
     imet_idx = imet
   #print(" imet_idx", imet_idx)
- 
+  count_1f += 1
+  nEvents_1f.SetBinContent(2,count_1f)
+    
   if (not (tau1_idx >= 0 and tau2_idx >= 0 and btag_idx >= 0 and HT_Total > 100 and Met_PT > 50 and tau1tau2_m > 100)): continue
 
   #tauPT_1.Fill(tau1pt)
@@ -815,12 +843,20 @@ for entry in range(0, numberOfEntries):
 #outputfile.cd()
 nEvents.Write()
 nEvents_1.Write()
+nEvents_1a.Write()
+nEvents_1b.Write()
+nEvents_1c.Write()
+nEvents_1d.Write()
+nEvents_1e.Write()
+nEvents_1f.Write()
+
 nEvents_2.Write()
 nEvents_3.Write()
 nEvents_4.Write()
 nEvents_13.Write()
 
 nEntries_1.Write()
+
 nEntries_2.Write()
 nEntries_7.Write()
 nEntries_8.Write()
@@ -928,6 +964,12 @@ t2_notgR_380500.Write()
 
 print( nEvents.GetEntries())
 print( nEvents_1.GetEntries())
+print( nEvents_1a.GetEntries())
+print( nEvents_1b.GetEntries())
+print( nEvents_1c.GetEntries())
+print( nEvents_1d.GetEntries())
+print( nEvents_1e.GetEntries())
+print( nEvents_1f.GetEntries())
 print( nEvents_2.GetEntries())
 print( nEntries_1.GetEntries())
 print( nEntries_2.GetEntries())
