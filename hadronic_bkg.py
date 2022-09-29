@@ -76,6 +76,9 @@ outputfile.cd()
 nEvents = ROOT.TH1F("nEvents", "total events", 10, 0.0, 10)
 nEvents_1 = ROOT.TH1F("nEvents_1", "total events", 10, 0.0, 10)
 nEvents_1a = ROOT.TH1F("nEvents_1a", "total events", 10, 0.0, 10)
+nEvents_1aa = ROOT.TH1F("nEvents_1aa", "total events", 10, 0.0, 10)
+nEvents_1ab = ROOT.TH1F("nEvents_1ab", "total events", 10, 0.0, 10)
+nEvents_1ac = ROOT.TH1F("nEvents_1ac", "total events", 10, 0.0, 10)
 nEvents_1b = ROOT.TH1F("nEvents_1b", "total events", 10, 0.0, 10)
 nEvents_1c = ROOT.TH1F("nEvents_1c", "total events", 10, 0.0, 10)
 nEvents_1d = ROOT.TH1F("nEvents_1d", "total events", 10, 0.0, 10)
@@ -205,6 +208,9 @@ def get_gentau(igen):
 # Loop over all events
 count_1 = 0
 count_1a = 0
+count_1aa = 0
+count_1ab = 0
+count_1ac = 0
 count_1b = 0
 count_1c = 0
 count_1d = 0
@@ -291,14 +297,22 @@ for entry in range(0, numberOfEntries):
 
     i +=1
     #print("coming inside tau1")
-    tautagOk1 = ( tau1.TauTag & (1 << 2) )
+    tautagOk1 = ( tau1.TauTag & (1 << 1) )
     if (not (tau1.PT >30 and abs(tau1.Eta) < 3. and tautagOk1 and abs(tau1.Charge) == 1)): continue
     for iTau2, tau2 in enumerate(branchJet):
+      count_1aa += 1
+      nEvents_1aa.SetBinContent(2,count_1aa)
+    
+
       #print("coming inside tau2")
       if (iTau1 == iTau2) : continue
-      tautagOk2 = ( tau2.TauTag & (1 << 2) )
+      tautagOk2 = ( tau2.TauTag & (1 << 1) )
       if (not (tau2.PT >30 and abs(tau2.Eta) < 3. and tautagOk2 and abs(tau2.Charge) == 1)): continue
+      count_1ab += 1
+      nEvents_1ab.SetBinContent(2,count_1ab)
       if (tau1.Charge*tau2.Charge < 0):
+        count_1ac += 1
+        nEvents_1ac.SetBinContent(2,count_1ac)
         HT = tau1.PT + tau2.PT
         if (HT > tau1_tau2_HT) :
           tau1_idx = iTau1
@@ -844,6 +858,9 @@ for entry in range(0, numberOfEntries):
 nEvents.Write()
 nEvents_1.Write()
 nEvents_1a.Write()
+nEvents_1aa.Write()
+nEvents_1ab.Write()
+nEvents_1ac.Write()
 nEvents_1b.Write()
 nEvents_1c.Write()
 nEvents_1d.Write()
@@ -965,6 +982,9 @@ t2_notgR_380500.Write()
 print( nEvents.GetEntries())
 print( nEvents_1.GetEntries())
 print( nEvents_1a.GetEntries())
+print( nEvents_1aa.GetEntries())
+print( nEvents_1ab.GetEntries())
+print( nEvents_1ac.GetEntries())
 print( nEvents_1b.GetEntries())
 print( nEvents_1c.GetEntries())
 print( nEvents_1d.GetEntries())
